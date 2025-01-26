@@ -4,7 +4,7 @@ services:
   # Spring Boot application service
   app:
     image: java-login-app    # The name of the image built from the Dockerfile
-    container_name: java-login-app
+    container_name: java-login-app-v2
     ports:
       - "8080:8080"          # Expose port 8080 from the container to the host
     environment:

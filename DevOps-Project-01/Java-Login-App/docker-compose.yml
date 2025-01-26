@@ -13,10 +13,11 @@ services:
       - SPRING_DATASOURCE_PASSWORD=test@123  # MySQL password
     depends_on:
       - mysql  # Ensure MySQL starts before the app container
+    entrypoint: /bin/sh -c "dockerize -wait tcp://mysql:3306 -timeout 30s && java -jar /path/to/your/app.jar"
 
   # MySQL database service
   mysql:
-    image: mysql:latest   # Use the latest MySQL image
+    image: mysql:8.0   # Use the 8.0 version of MySQL image (stable version)
     container_name: mysql
     environment:
       - MYSQL_ROOT_PASSWORD=test@123   # Root password for MySQL

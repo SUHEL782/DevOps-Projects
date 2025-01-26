@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Spring Boot application service
+  app:
+    image: java-login-app    # The name of the image built from the Dockerfile
+    container_name: java-login-app
+    ports:
+      - "8080:8080"          # Expose port 8080 from the container to the host
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/BankDB  # Connection URL for MySQL
+      - SPRING_DATASOURCE_USERNAME=root   # MySQL username
+      - SPRING_DATASOURCE_PASSWORD=test@123  # MySQL password
+    depends_on:
+      - mysql  # Ensure MySQL starts before the app container
+
+  # MySQL database service
+  mysql:
+    image: mysql:latest   # Use the latest MySQL image
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=test@123   # Root password for MySQL
+      - MYSQL_DATABASE=BankDB   # Name of the database to create
+    volumes:
+      - bankapp-volume:/var/lib/mysql  # Use named volume to persist database data
+    networks:
+      - app-network
+
+# Named volume to persist MySQL data across container restarts
+volumes:
+  bankapp-volume:
+
+# Custom network to allow communication between app and mysql containers
+networks:
+  app-network:
+    driver: bridge
